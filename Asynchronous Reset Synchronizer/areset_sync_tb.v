@@ -1,17 +1,17 @@
 module tb_areset_sync;
 
-  // Parameters
+  
   parameter STAGES = 2;
   parameter PERIOD = 10;
   
-  // Inputs
+  
   reg clk;
   reg async_rst_i;
   
-  // Outputs
+  
   wire sync_rst_o;
   
-  // Instantiate the module
+  
   areset_sync #(STAGES) dut (
     .clk(clk),
     .async_rst_i(async_rst_i),
@@ -20,10 +20,10 @@ module tb_areset_sync;
   initial  begin
 	  clk=0;
   end
-  // Clock generation
-  always #((PERIOD/2)) clk = ~clk;
   
-  // Initial stimulus
+  always #5 clk = ~clk;
+  
+  
   initial begin
 	  $dumpfile("con2.vcd");
 	  $dumpvars;
@@ -36,9 +36,8 @@ module tb_areset_sync;
   end
   
  always @(posedge clk) begin
-    // Assert sync_rst_o is low when async_rst_i is low
+    
     if (!async_rst_i?!sync_rst_o:1);
-    // Assert sync_rst_o is high when async_rst_i is high
     if (async_rst_i?sync_rst_o:1);
   end
 initial#100 $finish;
