@@ -1,14 +1,14 @@
 module pulse_generator (
-  input        clk,    // Clock
-  input wire       rstn,   // Synchronous Reset
-  output  pulse_o // Pulse out
+  input        clk,    
+  input wire       rstn,   
+  output  pulse_o 
 );
 
-  // Internal signals/registers
+  
   reg   pulse_rg;
   reg   [7:0] count;
 
-  // Pulse generator process
+ 
   always @(posedge clk) begin
     if (rstn == 1'b0) begin
       pulse_rg <= 1'b0;
@@ -24,7 +24,7 @@ module pulse_generator (
     end
   end
 
-  // Pulse out
+ 
   assign pulse_o = pulse_rg;
 
 endmodule
