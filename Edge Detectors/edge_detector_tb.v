@@ -7,7 +7,7 @@ module edge_detector_tb;
    wire sig_out_r, sig_out_f, sig_out_rf, sig_out_r_imm, sig_out_f_imm, sig_out_rf_imm;
    wire sig_out_r_imm_gl, sig_out_rf_imm_gl;
 
-   // Instantiate of  module
+  
    edge_detector uut (
       .clk(clk),
       .rst(rst),
@@ -22,10 +22,10 @@ module edge_detector_tb;
       .sig_out_rf_imm_gl(sig_out_rf_imm_gl)
    );
 
-   // Clock generator
+  
    always #5 clk = ~clk;
 
-   // Reset generator and wave input
+   
    initial begin
 	   $dumpfile("con6.vcd");
 	   $dumpvars;
@@ -45,7 +45,7 @@ module edge_detector_tb;
       #100 $finish;
    end
 
-   // to display the results
+   
    always @(posedge clk) begin
       $display("sig_out_r = %d, sig_out_f = %d, sig_out_rf = %d, sig_out_r_imm = %d, sig_out_f_imm = %d, sig_out_rf_imm = %d, sig_out_r_imm_gl = %d, sig_out_rf_imm_gl = %d", sig_out_r, sig_out_f, sig_out_rf, sig_out_r_imm, sig_out_f_imm, sig_out_rf_imm, sig_out_r_imm_gl, sig_out_rf_imm_gl);
    end
