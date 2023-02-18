@@ -1,0 +1,38 @@
+module pulse_sync(
+    input clk_a, sig_a, clk_b,
+    output sig_b, busy
+);
+
+    wire b2, b3, mux1, mux2;
+    reg a1, a3;
+
+    assign busy = a3 | a1;
+    assign sig_b = b2 & ~b3;
+    assign mux1 = a3 ? 1'b0 : a1;
+    assign mux2 = sig_a ? 1'b1 : mux1;
+
+    always @(posedge clk_b) begin
+        b3 <= b2;
+        
+    end
+
+    always @(posedge clk_a) begin
+        a1 <= mux2;
+       
+    end
+
+    ff_sync 1_sync (
+        .clk_a('1'), 
+        .sig_a(a1),  
+        .clk_b(clk_b),
+        .sig_b(b2)
+    );
+
+    ff_sync 2_sync (
+        .clk_a('1'),  
+        .sig_a(b2),  
+        .clk_b(clk_a),
+        .sig_b(a3)
+    );
+
+endmodule
