@@ -1,0 +1,39 @@
+module toggle_sync
+#(
+    parameter boolean re_edge = true,
+    parameter integer sync_size = 3
+)
+(
+    input clk_a,
+    input sig_a,
+    input clk_b,
+    output reg sig_b
+);
+
+    wire fast_event;
+    reg q = 1'b0;
+
+    reg [sync_size-1:0] capture_reg;
+    assign fast_event = (sig_a) ? ~q : q;
+
+    always @ (posedge clk_a or negedge clk_a) begin
+        if (re_edge && clk_a) begin
+            q <= fast_event;
+        end
+        else if (!re_edge &&  !clk_a) begin
+            q <= fast_event;
+        end
+    end
+
+    always @ (posedge clk_b or negedge clk_b) begin
+        if (re_edge &&  clk_b) begin
+            capture_reg <= {capture_reg[sync_size-2:0], q};
+        end
+        else if (!re_edge &&  clk_b) begin
+            capture_reg <= {capture_reg[sync_size-2:0], q};
+        end
+    end
+
+    assign sig_b = capture_reg[sync_size-1] ^ capture_reg[sync_size-2];
+
+endmodule
